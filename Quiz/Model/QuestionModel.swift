@@ -12,6 +12,7 @@ struct QuestionResponse: Codable {
     var results: [Response]
 }
 
+typealias resultData = [Response]
 
 struct Response: Codable {
     var category: String
