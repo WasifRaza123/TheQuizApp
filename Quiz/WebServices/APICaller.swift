@@ -13,7 +13,7 @@ class APICaller {
     
     func fetchDataFromURL(urlString: String, completion: @escaping (Result<QuestionResponse,Error>) -> Void){
         guard let url = URL(string: urlString) else {
-            completion(.failure(APIError.invalidError))
+            completion(.failure(APIError.invalidURLError))
             return
         }
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
@@ -35,7 +35,7 @@ class APICaller {
     }
     
     enum APIError: Error {
-        case invalidError
+        case invalidURLError
         case failedToGetData
     }
     
