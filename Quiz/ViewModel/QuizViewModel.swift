@@ -24,9 +24,6 @@ class QuizViewModel{
             case .failure(let error):
                 print(error)
             }
-            
         })
-        
     }
-    
 }

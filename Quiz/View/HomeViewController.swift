@@ -55,7 +55,10 @@ class HomeViewController: UIViewController {
                     return
                 }
                 
+                strongSelf.startQuizButton.isEnabled = true
+                
                 strongSelf.vc = QuizViewController(viewModel: strongSelf.viewModel)
+                
                 if let newVc = strongSelf.vc {
                     strongSelf.navigationController?.pushViewController(newVc, animated: true)
                 }
@@ -68,6 +71,7 @@ class HomeViewController: UIViewController {
             navigationController?.pushViewController(vc, animated: true)
         }
         else {
+            startQuizButton.isEnabled = false
             initViewModel()
             observeEvent()
         }

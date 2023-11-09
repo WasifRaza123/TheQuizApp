@@ -14,9 +14,8 @@ class QuizViewController: UIViewController {
     private let horizontalScrollView = UIScrollView()
     private let questionNumberStackView = UIStackView()
     private let viewModel: QuizViewModel
-    private var questions = [Response]()
     
-    private var isQuestionNumberStackViewSet = false
+    private var questions = [Response]()
     private var score = [Int:Int]()
     private var submittedAnswers = [Int:String]()
     
@@ -32,7 +31,6 @@ class QuizViewController: UIViewController {
         let label = PaddingLabel()
         label.textAlignment = .center
         label.backgroundColor = .white
-        
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 20)
         label.textColor = .black
@@ -63,10 +61,9 @@ class QuizViewController: UIViewController {
         setQuestions()
         addView()
         applyConstraints()
-        updateView()
     }
     
-    // MARK: Convenience
+    // MARK: - Convenience
     
     private func setQuestions() {
         guard let questions = viewModel.questions else {
@@ -77,113 +74,78 @@ class QuizViewController: UIViewController {
     }
     
     private func addView() {
+        questionNumberStackView.setStackView(axis: .horizontal, distribution: .fillEqually, spacing: 10)
         answerStackView.setStackView(axis: .vertical, distribution: .fillEqually, spacing: 10)
         buttonStackView.setStackView(axis: .horizontal, distribution: .fillEqually, spacing: 20)
-        questionNumberStackView.setStackView(axis: .horizontal, distribution: .fillEqually, spacing: 10)
         
         view.addSubview(buttonStackView)
         view.addSubview(scrollView)
-        horizontalScrollView.addSubview(questionNumberStackView)
+        
         scrollView.addSubview(questionLabel)
         scrollView.addSubview(answerStackView)
         scrollView.addSubview(horizontalScrollView)
+        
+        horizontalScrollView.addSubview(questionNumberStackView)
+        
         setQuestionNumberStackView()
+        setAnswerStackView()
         createBackAndNextButton()
     }
     
-    
     private func updateView() {
-        guard let (currentQuestion, currentAnswers) = getAnswers() else {
-            return
-        }
-        let answerCount = currentAnswers.count
-        self.questionLabel.text = currentQuestion
-        
-        for subView in answerStackView.arrangedSubviews {
-            answerStackView.removeArrangedSubview(subView)
-            subView.removeFromSuperview()
-        }
-        
-        for i in 0..<answerCount {
-            let answerButton = createButton()
-            answerButton.backgroundColor = .white
-            answerButton.setTitleColor(.black, for: .normal)
-            answerButton.setTitleColor(.white, for: .selected)
-            answerButton.setTitle(currentAnswers[i], for: .normal)
-            answerButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
-            answerButton.addTarget(self, action: #selector(didTapAnswerButton), for: .touchUpInside)
-            answerButton.layer.borderWidth = 1
-            answerButton.layer.borderColor = UIColor.gray.cgColor
-            if submittedAnswers[questionNumber] != nil && currentAnswers[i] == submittedAnswers[questionNumber] {
-                answerButton.isSelected = true
-                answerButton.backgroundColor = .blue
-            }
-            answerStackView.addArrangedSubview(answerButton)
-        }
-            updateQuestionNumberStackView()
+        emptyAnswerStackView()
+        setAnswerStackView()
+        updateQuestionNumberStackView()
     }
     
     private func setQuestionNumberStackView() {
         for i in 0..<questions.count {
-            let questionNumberButton = createButton()
-            questionNumberButton.backgroundColor = UIColor.skyBlue
-            questionNumberButton.setTitleColor(.black, for: .normal)
-            questionNumberButton.setTitleColor(.white, for: .selected)
-            questionNumberButton.setTitle("\(i+1)", for: .normal)
-            
-            questionNumberButton.layer.borderWidth = 1
-            questionNumberButton.layer.borderColor = UIColor.gray.cgColor
-            questionNumberButton.layer.cornerRadius = 20
-            
+            let questionNumberButton = UIButton()
+            questionNumberButton.setStackViewButton(withTitle: String(i+1), bgColor: UIColor.skyBlue,  cornerRadius: 20)
             questionNumberButton.addTarget(self, action: #selector(didTapQuestionNumberButton), for: .touchUpInside)
-            questionNumberStackView.addArrangedSubview(questionNumberButton)
             
-            questionNumberButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-            questionNumberButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-            
+            // Highlight current question number in the question number stack view.
             if i == questionNumber {
                 questionNumberButton.isSelected = true
-                questionNumberButton.backgroundColor = UIColor.oliveGreen
+                questionNumberButton.backgroundColor = UIColor.black
             }
+            questionNumberButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            questionNumberButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+            questionNumberStackView.addArrangedSubview(questionNumberButton)
+        }
+    }
+    
+    private func setAnswerStackView(){
+        guard let (currentQuestion, currentAnswers) = getAnswers() else {
+            return
+        }
+        
+        self.questionLabel.text = currentQuestion
+        
+        for answer in currentAnswers {
+            let answerButton = UIButton()
+            answerButton.setStackViewButton(withTitle: answer, bgColor: UIColor.white,  cornerRadius: 15)
+            answerButton.addTarget(self, action: #selector(didTapAnswerButton), for: .touchUpInside)
             
-        }
-        isQuestionNumberStackViewSet = true
-    }
-    
-    private func updateQuestionNumberStackView() {
-        for (index, subview) in questionNumberStackView.arrangedSubviews.enumerated() {
-            if let button = subview as? UIButton {
-                button.isSelected = false
-                button.backgroundColor = UIColor.skyBlue
-                
-                if submittedAnswers[index] != nil {
-                    button.isSelected = true
-                    button.backgroundColor = UIColor.oliveGreen
-                }
-
-                if index == questionNumber {
-                    
-                    button.isSelected = true
-                    button.backgroundColor = UIColor.oliveGreen
-                    let buttonFrame = button.superview?.convert(button.frame, from: horizontalScrollView)
-                    horizontalScrollView.scrollRectToVisible(buttonFrame ?? .zero, animated: true)
-                }
-                
+            // If user has marked answer for current question, highlight the ,marked answer
+            if submittedAnswers[questionNumber] != nil && answer == submittedAnswers[questionNumber] {
+                answerButton.isSelected = true
+                answerButton.backgroundColor = .blue
             }
+            answerButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
+            answerButton.titleLabel?.numberOfLines = 0
+            answerStackView.addArrangedSubview(answerButton)
         }
     }
-    
     
     private func createBackAndNextButton() {
-        let backButton = createButton()
-        backButton.setTitle(Constants.backButtonTitle, for: .normal)
-        backButton.backgroundColor = .link
+        let backButton = UIButton()
+        backButton.setButton(withTitle: Constants.backButtonTitle, bgColor: UIColor.black)
         backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         buttonStackView.addArrangedSubview(backButton)
         
-        let nextButton = createButton()
-        nextButton.setTitle(Constants.nextButtonTitle, for: .normal)
-        nextButton.backgroundColor = .link
+        let nextButton = UIButton()
+        nextButton.setButton(withTitle: Constants.nextButtonTitle, bgColor: UIColor.black)
         nextButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
         buttonStackView.addArrangedSubview(nextButton)
     }
@@ -198,74 +160,8 @@ class QuizViewController: UIViewController {
             let vc = UINavigationController(rootViewController: SubmitViewController(score: strongSelf.score, submittedAnswers: strongSelf.submittedAnswers))
             vc.modalPresentationStyle = .fullScreen
             self?.present(vc, animated: true)
-            
         }))
         present(alert, animated: true)
-        
-    }
-    
-    // MARK: - Actions
-    
-    @objc func didTapAnswerButton(sender: UIButton) {
-        guard sender.isSelected == false else {
-            sender.isSelected = false
-            sender.backgroundColor = .white
-            score[questionNumber] = nil
-            submittedAnswers[questionNumber] = nil
-            return
-        }
-        
-        
-        for view in sender.superview?.subviews ?? [] {
-            if let button = view as? UIButton {
-                button.isSelected = false
-                button.backgroundColor = .white
-            }
-        }
-        
-        sender.isSelected = true
-        sender.backgroundColor = .blue
-        
-        if let answer = sender.titleLabel?.text {
-            if questions[questionNumber].correct_answer == answer {
-                score[questionNumber] = 1;
-            }
-            else {
-                score[questionNumber] = 0;
-            }
-            submittedAnswers[questionNumber] = answer
-        }
-    }
-
-    @objc func didTapBackButton() {
-        if questionNumber > 0 {
-            questionNumber -= 1
-        }
-    }
-    
-    @objc func didTapNextButton() {
-        if questionNumber < questions.count - 1 {
-            questionNumber += 1
-        }
-        else {
-            createAlert()
-        }
-    }
-    
-    @objc private func didTapQuestionNumberButton(sender: UIButton){
-    
-        guard let questionNumber = sender.titleLabel?.text, let questionValue = Int(questionNumber)  else {
-            return
-        }
-        self.questionNumber = questionValue - 1
-//        for view in sender.superview?.subviews ?? [] {
-//            if let button = view as? UIButton {
-//                button.isSelected = false
-//                button.backgroundColor = UIColor.skyBlue
-//            }
-//        }
-        sender.isSelected = true
-        sender.backgroundColor = UIColor.oliveGreen
     }
     
     private func applyConstraints() {
@@ -325,15 +221,98 @@ class QuizViewController: UIViewController {
         }
         return (currentQuestion, currentAnswers)
     }
-    
-    private func createButton() -> UIButton {
-        let button = UIButton()
-        button.layer.cornerRadius = 15
-        button.layer.cornerCurve = .continuous
-        button.layer.masksToBounds = true
-        button.titleLabel?.textAlignment = .center
-        return button
-    }
-    
 }
 
+// MARK: -  Functions related with updating the stack views
+extension QuizViewController {
+    
+    private func emptyAnswerStackView(){
+        for subView in answerStackView.arrangedSubviews {
+            answerStackView.removeArrangedSubview(subView)
+            subView.removeFromSuperview()
+        }
+    }
+    
+    private func updateQuestionNumberStackView() {
+        for (index, subview) in questionNumberStackView.arrangedSubviews.enumerated() {
+            if let button = subview as? UIButton {
+                button.isSelected = false
+                button.backgroundColor = UIColor.skyBlue
+                
+                if submittedAnswers[index] != nil {
+                    button.isSelected = true
+                    button.backgroundColor = UIColor.black
+                }
+
+                if index == questionNumber {
+                    
+                    button.isSelected = true
+                    button.backgroundColor = UIColor.black
+                    let buttonFrame = button.superview?.convert(button.frame, from: horizontalScrollView)
+                    horizontalScrollView.scrollRectToVisible(buttonFrame ?? .zero, animated: true)
+                }
+                
+            }
+        }
+    }
+}
+
+// MARK: - Actions
+
+extension QuizViewController {
+    
+    @objc func didTapAnswerButton(sender: UIButton) {
+        // When user taps again on the selected answer, it gets deselected
+        guard sender.isSelected == false else {
+            sender.isSelected = false
+            sender.backgroundColor = .white
+            score[questionNumber] = nil
+            submittedAnswers[questionNumber] = nil
+            return
+        }
+        
+        // Deselect other button, when user clicks on more than one button
+        for view in sender.superview?.subviews ?? [] {
+            if let button = view as? UIButton {
+                button.isSelected = false
+                button.backgroundColor = .white
+            }
+        }
+        
+        // Select the current button clicked
+        sender.isSelected = true
+        sender.backgroundColor = .blue
+        
+        // Add score if selected answer is correct, and also mark submitted answers
+        if let answer = sender.titleLabel?.text {
+            if questions[questionNumber].correct_answer == answer {
+                score[questionNumber] = 1;
+            }
+            submittedAnswers[questionNumber] = answer
+        }
+    }
+
+    @objc func didTapBackButton() {
+        if questionNumber > 0 {
+            questionNumber -= 1
+        }
+    }
+    
+    @objc func didTapNextButton() {
+        if questionNumber < questions.count - 1 {
+            questionNumber += 1
+        }
+        else {
+            createAlert()
+        }
+    }
+    
+    @objc private func didTapQuestionNumberButton(sender: UIButton){
+        guard let questionNumber = sender.titleLabel?.text, let questionValue = Int(questionNumber)  else {
+            return
+        }
+        self.questionNumber = questionValue - 1
+        sender.isSelected = true
+        sender.backgroundColor = UIColor.black
+    }
+}
