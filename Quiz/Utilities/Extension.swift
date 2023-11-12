@@ -25,32 +25,6 @@ extension String {
     }
 }
 
-extension UIView {
-    func setRadiusWithShadow(_ radius: CGFloat? = nil) { // this method adds shadow to right and bottom side of button
-        self.layer.cornerRadius = radius ?? self.frame.width / 2
-        self.layer.shadowColor = UIColor.red.cgColor
-        self.layer.shadowOffset = CGSize(width: 1.5, height: 1.5)
-        self.layer.shadowRadius = 1.0
-        self.layer.shadowOpacity = 0.7
-        self.layer.masksToBounds = false
-    }
-    
-    func setAllSideShadow(shadowShowSize: CGFloat = 1.0) { // this method adds shadow to allsides
-        let shadowSize : CGFloat = shadowShowSize
-        let shadowPath = UIBezierPath(rect: CGRect(x: -shadowSize / 2,
-                                                   y: -shadowSize / 2,
-                                                   width: self.frame.size.width + shadowSize,
-                                                   height: self.frame.size.height + shadowSize))
-        self.layer.masksToBounds = false
-        self.layer.shadowColor = UIColor.red.withAlphaComponent(0.8).cgColor
-        self.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
-        self.layer.shadowOpacity = 0.5
-        self.layer.shadowPath = shadowPath.cgPath
-    }
-    
-    
-}
-
 extension UIStackView {
     func setStackView(axis: NSLayoutConstraint.Axis, distribution: Distribution, spacing: CGFloat){
         self.axis = axis
@@ -58,6 +32,36 @@ extension UIStackView {
         self.spacing = spacing
     }
     
+}
+
+extension UIView {
+    func setLeadingLabel(withTitle Title:String){
+        let label = UILabel()
+        label.text = Title
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 18)
+        self.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+            label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        ])
+    }
+    
+    func setTrailingLabel(withTitle Title:String){
+        let label = UILabel()
+        label.text = Title
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 18)
+        self.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            label.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
+            label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        ])
+        
+    }
 }
 
 extension UIColor {

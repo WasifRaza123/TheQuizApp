@@ -14,7 +14,7 @@ class QuizViewModel{
             eventHandler?()
         }
     }
-//    var questions = [Response]()
+    
     func fetchQuestions() {
         APICaller.shared.fetchDataFromURL(urlString: Constants.urlString, completion: {[weak self] result in
             switch result {

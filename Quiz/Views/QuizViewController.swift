@@ -57,9 +57,9 @@ class QuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGray5
+        view.backgroundColor = .systemGray6
         setQuestions()
-        addView()
+        setUpViews()
         applyConstraints()
     }
     
@@ -73,7 +73,7 @@ class QuizViewController: UIViewController {
         self.questions = questions
     }
     
-    private func addView() {
+    private func setUpViews() {
         questionNumberStackView.setStackView(axis: .horizontal, distribution: .fillEqually, spacing: 10)
         answerStackView.setStackView(axis: .vertical, distribution: .fillEqually, spacing: 10)
         buttonStackView.setStackView(axis: .horizontal, distribution: .fillEqually, spacing: 20)
@@ -85,6 +85,7 @@ class QuizViewController: UIViewController {
         scrollView.addSubview(answerStackView)
         scrollView.addSubview(horizontalScrollView)
         
+        horizontalScrollView.showsHorizontalScrollIndicator = false
         horizontalScrollView.addSubview(questionNumberStackView)
         
         setQuestionNumberStackView()
@@ -103,11 +104,15 @@ class QuizViewController: UIViewController {
             let questionNumberButton = UIButton()
             questionNumberButton.setStackViewButton(withTitle: String(i+1), bgColor: UIColor.skyBlue,  cornerRadius: 20)
             questionNumberButton.addTarget(self, action: #selector(didTapQuestionNumberButton), for: .touchUpInside)
+            questionNumberButton.accessibilityLabel = "Question Number \(i + 1)"
             
             // Highlight current question number in the question number stack view.
             if i == questionNumber {
                 questionNumberButton.isSelected = true
                 questionNumberButton.backgroundColor = UIColor.black
+            }
+            else {
+                questionNumberButton.accessibilityHint = "Double tap to move to question number \(i + 1)"
             }
             questionNumberButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
             questionNumberButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
@@ -121,8 +126,9 @@ class QuizViewController: UIViewController {
         }
         
         self.questionLabel.text = currentQuestion
+        questionLabel.accessibilityLabel = "Question number \(questionNumber + 1) : \(currentQuestion)"
         
-        for answer in currentAnswers {
+        for (index, answer) in currentAnswers.enumerated() {
             let answerButton = UIButton()
             answerButton.setStackViewButton(withTitle: answer, bgColor: UIColor.white,  cornerRadius: 15)
             answerButton.addTarget(self, action: #selector(didTapAnswerButton), for: .touchUpInside)
@@ -135,6 +141,9 @@ class QuizViewController: UIViewController {
             answerButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
             answerButton.titleLabel?.numberOfLines = 0
             answerStackView.addArrangedSubview(answerButton)
+            
+            answerButton.accessibilityLabel = "Answer Number \(questionNumber + 1) option \(index + 1): \(answer)"
+            answerButton.accessibilityHint = !answerButton.isSelected ? Constants.selectAnswerButtonAccessibilityHint : Constants.deselectAnswerButtonAccessibilityHint
         }
     }
     
@@ -142,11 +151,13 @@ class QuizViewController: UIViewController {
         let backButton = UIButton()
         backButton.setButton(withTitle: Constants.backButtonTitle, bgColor: UIColor.black)
         backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        backButton.accessibilityHint = Constants.prevQuestionButtonAccessibilityHint
         buttonStackView.addArrangedSubview(backButton)
         
         let nextButton = UIButton()
         nextButton.setButton(withTitle: Constants.nextButtonTitle, bgColor: UIColor.black)
         nextButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
+        nextButton.accessibilityHint = Constants.nextQuestionButtonAccessibilityHint
         buttonStackView.addArrangedSubview(nextButton)
     }
     
@@ -157,7 +168,7 @@ class QuizViewController: UIViewController {
             guard let strongSelf = self else {
                 return
             }
-            let vc = UINavigationController(rootViewController: SubmitViewController(score: strongSelf.score, submittedAnswers: strongSelf.submittedAnswers))
+            let vc = UINavigationController(rootViewController: SubmitViewController(score: strongSelf.score, questionCount: strongSelf.questions.count))
             vc.modalPresentationStyle = .fullScreen
             self?.present(vc, animated: true)
         }))
@@ -234,24 +245,29 @@ extension QuizViewController {
     }
     
     private func updateQuestionNumberStackView() {
+        
         for (index, subview) in questionNumberStackView.arrangedSubviews.enumerated() {
-            if let button = subview as? UIButton {
-                button.isSelected = false
-                button.backgroundColor = UIColor.skyBlue
+            if let questionNumberButton = subview as? UIButton {
+                questionNumberButton.isSelected = false
+                questionNumberButton.backgroundColor = UIColor.skyBlue
                 
                 if submittedAnswers[index] != nil {
-                    button.isSelected = true
-                    button.backgroundColor = UIColor.black
+                    questionNumberButton.isSelected = true
+                    questionNumberButton.backgroundColor = UIColor.black
                 }
 
                 if index == questionNumber {
-                    
-                    button.isSelected = true
-                    button.backgroundColor = UIColor.black
-                    let buttonFrame = button.superview?.convert(button.frame, from: horizontalScrollView)
+                    questionNumberButton.isSelected = true
+                    questionNumberButton.backgroundColor = UIColor.black
+                    let buttonFrame = questionNumberButton.superview?.convert(questionNumberButton.frame, from: horizontalScrollView)
                     horizontalScrollView.scrollRectToVisible(buttonFrame ?? .zero, animated: true)
+                    
+                    // Change the current question number hint to nil
+                    questionNumberButton.accessibilityHint = nil
                 }
-                
+                else {
+                    questionNumberButton.accessibilityHint = "Double tap to move to question number \(index + 1)"
+                }
             }
         }
     }
@@ -261,15 +277,18 @@ extension QuizViewController {
 
 extension QuizViewController {
     
-    @objc func didTapAnswerButton(sender: UIButton) {
+    @objc private func didTapAnswerButton(sender: UIButton) {
         // When user taps again on the selected answer, it gets deselected
         guard sender.isSelected == false else {
             sender.isSelected = false
             sender.backgroundColor = .white
             score[questionNumber] = nil
             submittedAnswers[questionNumber] = nil
+            sender.accessibilityHint = Constants.selectAnswerButtonAccessibilityHint
             return
         }
+        
+        sender.accessibilityHint = Constants.deselectAnswerButtonAccessibilityHint
         
         // Deselect other button, when user clicks on more than one button
         for view in sender.superview?.subviews ?? [] {
@@ -286,21 +305,30 @@ extension QuizViewController {
         // Add score if selected answer is correct, and also mark submitted answers
         if let answer = sender.titleLabel?.text {
             if questions[questionNumber].correct_answer == answer {
-                score[questionNumber] = 1;
+                score[questionNumber] = 1
+            }
+            else {
+                score[questionNumber] = 0
             }
             submittedAnswers[questionNumber] = answer
         }
     }
 
-    @objc func didTapBackButton() {
+    @objc private func didTapBackButton() {
         if questionNumber > 0 {
             questionNumber -= 1
+            // Tell the user that question has changed
+            let announcement = "Back Button Clicked. Moved to question number \(questionNumber + 1)"
+            UIAccessibility.post(notification: .announcement, argument: announcement)
         }
     }
     
-    @objc func didTapNextButton() {
+    @objc private func didTapNextButton(sender: UIButton) {
         if questionNumber < questions.count - 1 {
             questionNumber += 1
+            // Tell the user that question has changed
+            let announcement = "Next Button Clicked. Moved to question number \(questionNumber + 1)"
+            UIAccessibility.post(notification: .announcement, argument: announcement)
         }
         else {
             createAlert()
@@ -308,10 +336,21 @@ extension QuizViewController {
     }
     
     @objc private func didTapQuestionNumberButton(sender: UIButton){
-        guard let questionNumber = sender.titleLabel?.text, let questionValue = Int(questionNumber)  else {
+        guard let quesNumber = sender.titleLabel?.text,
+                let questionValue = Int(quesNumber)  else {
             return
         }
-        self.questionNumber = questionValue - 1
+        
+        guard questionNumber != questionValue - 1 else {
+            sender.accessibilityHint = nil
+            return
+        }
+        
+        questionNumber = questionValue - 1
+        // Tell the user that question has changed
+        let announcement = " Question Number \(questionValue) button clicked, Moved to \(questionValue)"
+        UIAccessibility.post(notification: .announcement, argument: announcement)
+        
         sender.isSelected = true
         sender.backgroundColor = UIColor.black
     }

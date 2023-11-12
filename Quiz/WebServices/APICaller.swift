@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class APICaller {
     static let shared = APICaller()
     
@@ -28,10 +27,7 @@ class APICaller {
             catch {
                 completion(.failure(APIError.failedToGetData))
             }
-            
-            
         }.resume()
-        
     }
     
     enum APIError: Error {

@@ -5,7 +5,6 @@
 //  Created by Mohd Wasif Raza on 09/11/23.
 //
 
-import Foundation
 import UIKit
 
 class PaddingLabel: UILabel {

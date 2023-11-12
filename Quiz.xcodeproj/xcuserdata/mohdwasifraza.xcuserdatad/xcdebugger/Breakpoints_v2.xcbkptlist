@@ -7,63 +7,47 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7423CFBE-3136-48E7-91E0-5A5390084221"
+            uuid = "81D2AFD9-FE3B-4EB0-A349-1E56C9DA58D9"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Quiz/View/QuizViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "QuizViewController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EE44883E-7589-4292-BF53-4535CFEF6C79"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Quiz/View/HomeViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "observeEvent()"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
+            landmarkName = "didTapQuestionNumberButton(sender:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "EE44883E-7589-4292-BF53-4535CFEF6C79 - 87577e1c72e1bab0"
+                  uuid = "81D2AFD9-FE3B-4EB0-A349-1E56C9DA58D9 - d089a89607b3331f"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in Quiz.HomeViewController.observeEvent() -&gt; ()"
+                  symbolName = "Quiz.QuizViewController.didTapQuestionNumberButton(sender: __C.UIButton) -&gt; ()"
                   moduleName = "Quiz"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mohdwasifraza/Desktop/Quiz/Quiz/View/HomeViewController.swift"
+                  urlString = "file:///Users/mohdwasifraza/Desktop/Quiz/Quiz/View/QuizViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "63"
-                  endingLineNumber = "63"
-                  offsetFromSymbolStart = "320">
+                  startingLineNumber = "357"
+                  endingLineNumber = "357"
+                  offsetFromSymbolStart = "1088">
                </Location>
                <Location
-                  uuid = "EE44883E-7589-4292-BF53-4535CFEF6C79 - f59c3b3156457d66"
+                  uuid = "81D2AFD9-FE3B-4EB0-A349-1E56C9DA58D9 - d089a89607b3331f"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 () -&gt; () in Quiz.HomeViewController.observeEvent() -&gt; ()"
+                  symbolName = "Quiz.QuizViewController.didTapQuestionNumberButton(sender: __C.UIButton) -&gt; ()"
                   moduleName = "Quiz"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mohdwasifraza/Desktop/Quiz/Quiz/View/HomeViewController.swift"
+                  urlString = "file:///Users/mohdwasifraza/Desktop/Quiz/Quiz/View/QuizViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "63"
-                  endingLineNumber = "63"
-                  offsetFromSymbolStart = "272">
+                  startingLineNumber = "357"
+                  endingLineNumber = "357"
+                  offsetFromSymbolStart = "1024">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -71,128 +55,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2C76608F-47EA-4436-A1AD-322736679DED"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Quiz/View/HomeViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
-            landmarkName = "didTapStartButton()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "2C76608F-47EA-4436-A1AD-322736679DED - 65fa62772b78844b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Quiz.HomeViewController.didTapStartButton() -&gt; ()"
-                  moduleName = "Quiz"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mohdwasifraza/Desktop/Quiz/Quiz/View/HomeViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "69"
-                  endingLineNumber = "69"
-                  offsetFromSymbolStart = "212">
-               </Location>
-               <Location
-                  uuid = "2C76608F-47EA-4436-A1AD-322736679DED - 65fa62772b788468"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Quiz.HomeViewController.didTapStartButton() -&gt; ()"
-                  moduleName = "Quiz"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mohdwasifraza/Desktop/Quiz/Quiz/View/HomeViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "70"
-                  endingLineNumber = "70"
-                  offsetFromSymbolStart = "36">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E9071FA7-F0A1-49D5-BEB4-AC8A85194513"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Quiz/View/HomeViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "didTapStartButton()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "E9071FA7-F0A1-49D5-BEB4-AC8A85194513 - 65fa62772b7887d6"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Quiz.HomeViewController.didTapStartButton() -&gt; ()"
-                  moduleName = "Quiz"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mohdwasifraza/Desktop/Quiz/Quiz/View/HomeViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "72"
-                  endingLineNumber = "72"
-                  offsetFromSymbolStart = "236">
-               </Location>
-               <Location
-                  uuid = "E9071FA7-F0A1-49D5-BEB4-AC8A85194513 - 65fa62772b788409"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Quiz.HomeViewController.didTapStartButton() -&gt; ()"
-                  moduleName = "Quiz"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mohdwasifraza/Desktop/Quiz/Quiz/View/HomeViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "71"
-                  endingLineNumber = "71"
-                  offsetFromSymbolStart = "100">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3E5CB4FE-EB1A-497B-BE0E-5B796F24728A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Quiz/View/HomeViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "didTapStartButton()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "08845648-705B-46A0-B65C-D7D60687F5AD"
-            shouldBeEnabled = "Yes"
+            uuid = "809871E9-CE74-4433-9376-58470CE54AD9"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Quiz/View/QuizViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "addView()"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "setQuestionNumberStackView()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "62E4D19A-DA17-4ECE-9388-96C0CB619748"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Quiz/Views/HomeViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "viewDidLayoutSubviews()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
