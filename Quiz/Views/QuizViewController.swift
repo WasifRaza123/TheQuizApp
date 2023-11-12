@@ -57,7 +57,7 @@ class QuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGray6
+        view.backgroundColor = .systemGray4
         setQuestions()
         setUpViews()
         applyConstraints()
